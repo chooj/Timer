@@ -1,0 +1,332 @@
+// menu
+int clockX = 230;
+String hour;
+String minute;
+String second;
+String AMPM;
+// stopwatch
+int stopTimem2 = 0;
+int stopTimes = 0;
+int stopTimem = 0;
+int stopTimeh = 0;
+String stopM2;
+String stopS;
+String stopM;
+String stopH = stopTimeh + "";
+boolean started = false; 
+boolean goinUp = false;
+// timer
+int minutes = 0;
+int seconds = 5;
+int timerm = minutes;
+float timers = seconds;
+String timerS;
+String timerM;
+String starts;
+color timerFill = color(0, 0, 0);
+boolean goinDown = false;
+boolean canDown = true;
+// booleans!
+boolean inMenu = true;
+boolean inStopwatch = false;
+boolean inTimer = false;
+// font
+PFont font = createFont("Avenir-Black", 50);
+
+void menu() {
+  fill(0, 0, 0);
+  textFont(font, 150);
+  text("TIMER", 170, 200);
+  textFont(font, 100);
+  text(hour + ":" + minute, 230, 320);
+  textFont(font, 50);
+  text(AMPM + "", clockX, 320);
+  strokeWeight(3);
+  noFill();
+  rect(80, 380, 300, 170);
+  rect(420, 380, 300, 170);
+  textFont(font, 40);
+  text("STOPWATCH", 105, 480);
+  text("TIMER", 510, 480);
+  if (hour() > 12) {
+    hour = hour() - 12 + "";
+    AMPM = "PM";
+  } else {
+    hour = hour() + "";
+    AMPM = "AM";
+  }
+  if ((hour() >=10 && hour() <= 12)||(hour() - 12 >= 10)) {
+    clockX = 490;
+  } else {
+    clockX = 440;
+  }
+  if (minute() < 10) {
+    minute = "0" + minute();
+  } else {
+    minute = minute() + "";
+  }
+  if (second() < 10) {
+    second = "0" + second();
+  } else {
+    second = second() + "";
+  }
+}
+void stopwatch() {
+  textFont(font, 110);
+  fill(0, 0, 0);
+  text(stopH + ":" + stopM + ":" + stopS + ":" + stopM2, 80, 250);
+  if (stopTimem2 < 10) {
+    stopM2 = "0" + stopTimem2;
+  } else {
+    stopM2 = stopTimem2 + "";
+  }
+  if (stopTimes < 10) {
+    stopS = "0" + stopTimes;
+  } else {
+    stopS = stopTimes + "";
+  }
+  if (stopTimem < 10) {
+    stopM = "0" + stopTimem;
+  } else {
+    stopM = stopTimem + "";
+  }
+  if (goinUp == true) {
+    stopTimem2 = stopTimem2 + 1;
+  }
+  if (stopTimem2 > 99) {
+    stopTimes = stopTimes + 1;
+    stopTimem2 = 0;
+  }
+  if (stopTimes > 59) {
+    stopTimem = stopTimem + 1;
+    stopTimes = 0;
+  }
+  if (stopTimem > 59) {
+    stopTimeh = stopTimeh + 1;
+    stopTimem = 0;
+  }
+  strokeWeight(3);
+  noFill();
+  rect(80, 320, 300, 230);
+  rect(420, 320, 300, 100);
+  rect(420, 450, 300, 100);
+  rect(80, 30, 300, 60);
+  if (goinUp == true) {
+    fill(0, 0, 0);
+  } else {
+    fill(150, 150, 150);
+  }
+  textFont(font, 40);
+  text("PAUSE", 165, 450);
+  if (goinUp == true) {
+    fill(150, 150, 150);
+  } else {
+    fill(0, 0, 0);
+  }
+  if (started == false) {
+    text("START", 510, 385);
+  } else {
+    text("CONTINUE", 465, 385);
+  }
+  if (started == true) {
+    fill(0, 0, 0);
+  } else {
+    fill(150, 150, 150);
+  }
+  text("RESET", 510, 515);
+  fill(0, 0, 0);
+  text("MENU", 170, 75);
+  if ((stopTimem2 > 0)||(stopTimes > 0)||(stopTimem > 0)||(stopTimeh > 0)) {
+    started = true;
+  } else {
+    started = false;
+  }
+}
+void timer() {
+  textFont(font, 110);
+  fill(timerFill);
+  text(timerM + ":" + timerS, 80, 250);
+  if (goinDown == true && canDown == true) {
+    timers = timers - 0.01;
+  }
+  if (canDown == false) {
+    timerFill = color(255, 50, 50);
+  } else {
+    timerFill = color(0, 0, 0);
+  }
+  if (timers < 0 && timerm > 0) {
+    timerm = timerm - 1;
+    timers = 59;
+  }
+  if (timerm < 10) {
+    timerM = "0" + timerm;
+  } else {
+    timerM = timerm + "";
+  }
+  if (round(timers) < 10) {
+    timerS = "0" + round(timers);
+  } else {
+    timerS = round(timers) + "";
+  }
+  if (seconds < 10) {
+    starts = "0" + seconds;
+  } else {
+    starts = seconds + "";
+  }
+  strokeWeight(3);
+  noFill();
+  rect(80, 30, 300, 60);
+  rect(80, 320, 300, 100);
+  rect(80, 450, 300, 100);
+  rect(420, 320, 300, 100);
+  rect(420, 450, 300, 100);
+  textFont(font, 40);
+  fill(0, 0, 0);
+  if (goinDown == false) {
+    fill(0, 0, 0);
+  } else {
+    fill(150, 150, 150);
+  }
+  text("START", 515, 385);
+  if (timerm == minutes && timers == seconds) {
+    fill(150, 150, 150);
+  } else {
+    fill(0, 0, 0);
+  }
+  text("RESET", 170, 515);
+  if (goinDown == true) {
+    fill(0, 0, 0);
+  } else {
+    fill(150, 150, 150);
+  }
+  text("PAUSE", 510, 515);
+  if (goinDown == false) {
+    fill(0, 0, 0);
+  } else {
+    fill(150, 150, 150);
+  }
+  text("- +", 100, 385);
+  text(minutes + ":" + starts + "    - +", 190, 385);
+  text("MENU", 170, 75);
+  if (timers <= 0 && timerm <= 0) {
+    canDown = false;
+  } else {
+    canDown = true;
+  }
+}
+
+void setup() {
+  size(800, 600);
+}
+
+void draw() {
+  background(255);
+  frameRate(100);
+  if (inMenu == true) {
+    menu();
+  }
+  if (inStopwatch == true) {
+    stopwatch();
+  }
+  if (inTimer == true) {
+    timer();
+  }
+}
+
+void mousePressed() {
+  // stopwatch
+  if (inStopwatch == true) {
+    if (goinUp == false) {
+      if (mouseX > 420 && mouseX < 720 && mouseY > 320 && mouseY < 420) {
+        goinUp = true;
+      }
+    } else {
+      if (mouseX > 80 && mouseX < 380 && mouseY > 320 && mouseY < 550) {
+        goinUp = false;
+      }
+    }
+    if (started == true && mouseX > 420 && mouseX < 720 && mouseY > 450 && mouseY < 550) {
+      stopTimem2 = 0;
+      stopTimes = 0;
+      stopTimem = 0;
+      stopTimeh = 0;
+      goinUp = false;
+    }
+    if (mouseX > 80 && mouseX < 380 && mouseY > 30 && mouseY < 90) {
+      stopTimem2 = 0;
+      stopTimes = 0;
+      stopTimem = 0;
+      stopTimeh = 0;
+      goinUp = false;
+      inStopwatch = false;
+      inMenu = true;
+    }
+  }
+  // timer
+  if (inTimer == true) {
+    if (goinDown == false) {
+      if (minutes > 0 && mouseX > 97 && mouseX < 115 && mouseY > 366 && mouseY < 384) {
+        minutes = minutes - 1;
+        timerm = minutes;
+        timers = seconds;
+      }
+      if (minutes < 60 && mouseX > 123 && mouseX < 151 && mouseY > 360 && mouseY < 386) {
+        minutes = minutes + 1;
+        timerm = minutes;
+        timers = seconds;
+      }
+      if (mouseX > 309 && mouseX < 327 && mouseY > 366 && mouseY < 384) {
+        if (seconds == 0) {
+          minutes = minutes - 1;
+          seconds = seconds + 59;
+          timerm = minutes;
+        } else {
+          seconds = seconds - 1;
+        }
+        timers = seconds;
+      }
+      if (minutes > 0 && seconds > 1 && mouseX > 336 && mouseX < 464 && mouseY > 360 && mouseY < 386) {
+        if (seconds < 59) {
+          seconds = seconds + 1;
+          timerm = minutes;
+        }
+        if (seconds == 59) {
+          minutes = minutes + 1;
+          seconds = seconds - 59;
+          timerm = minutes;
+        }
+        timers = seconds;
+      }
+    }
+    if (canDown == true && mouseX > 420 && mouseX < 720 && mouseY > 320 && mouseY < 420) {
+      goinDown = true;
+    }
+    if (mouseX > 420 && mouseX < 720 && mouseY > 450 && mouseY < 550) {
+      goinDown = false;
+    }
+    if (mouseX > 80 && mouseX < 380 && mouseY > 450 && mouseY < 550) {
+      timerm = minutes;
+      timers = seconds;
+      goinDown = false;
+    }
+    if (mouseX > 80 && mouseX < 380 && mouseY > 30 && mouseY < 90) {
+      goinDown = false;
+      inTimer = false;
+      inMenu = true;
+    }
+  }
+}
+
+void mouseReleased() {
+  // menu
+  if (inMenu == true) {
+    if (mouseX > 80 && mouseX < 380 && mouseY > 380 && mouseY < 550) {
+      inMenu = false;
+      inStopwatch = true;
+    }
+    if (mouseX > 420 && mouseX < 720 && mouseY > 380 && mouseY < 550) {
+      inMenu = false;
+      inTimer = true;
+    }
+  }
+}
